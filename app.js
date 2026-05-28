@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
    ========================================================================== */
 function initHeaderScroll() {
     const header = document.getElementById('header');
-    
+
     const handleScroll = () => {
         if (window.scrollY > 50) {
             header.classList.add('scrolled');
@@ -28,7 +28,7 @@ function initHeaderScroll() {
             header.classList.remove('scrolled');
         }
     };
-    
+
     window.addEventListener('scroll', handleScroll);
     // Trigger once on load in case the user reloads page down
     handleScroll();
@@ -42,26 +42,26 @@ function initMobileMenu() {
     const mainNav = document.getElementById('main-nav');
     const navLinks = document.querySelectorAll('.nav-link');
     const headerCta = document.getElementById('btn-header-cta');
-    
+
     const toggleMenu = () => {
         navToggle.classList.toggle('active');
         mainNav.classList.toggle('open');
         document.body.classList.toggle('no-scroll');
     };
-    
+
     const closeMenu = () => {
         navToggle.classList.remove('active');
         mainNav.classList.remove('open');
         document.body.classList.remove('no-scroll');
     };
-    
+
     navToggle.addEventListener('click', toggleMenu);
-    
+
     // Close menu when clicking on any link
     navLinks.forEach(link => {
         link.addEventListener('click', closeMenu);
     });
-    
+
     // Close menu when clicking on header CTA button (on mobile if visible)
     if (headerCta) {
         headerCta.addEventListener('click', closeMenu);
@@ -73,21 +73,21 @@ function initMobileMenu() {
    ========================================================================== */
 function initSmoothScroll() {
     const anchors = document.querySelectorAll('a[href^="#"]');
-    
+
     anchors.forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
+        anchor.addEventListener('click', function (e) {
             e.preventDefault();
-            
+
             const targetId = this.getAttribute('href');
             if (targetId === '#') return;
-            
+
             const targetElement = document.querySelector(targetId);
             if (targetElement) {
                 // Header offset deduction
                 const headerOffset = 90;
                 const elementPosition = targetElement.getBoundingClientRect().top;
                 const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                
+
                 window.scrollTo({
                     top: offsetPosition,
                     behavior: 'smooth'
@@ -103,18 +103,18 @@ function initSmoothScroll() {
 function initActiveNavOnScroll() {
     const sections = document.querySelectorAll('section');
     const navLinks = document.querySelectorAll('.nav-link');
-    
+
     const options = {
         root: null,
         rootMargin: '-120px 0px -40% 0px', // Adjusted offset to trigger when section enters viewport properly
         threshold: 0
     };
-    
+
     const observerCallback = (entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const activeId = entry.target.getAttribute('id');
-                
+
                 navLinks.forEach(link => {
                     link.classList.remove('active');
                     if (link.getAttribute('href') === `#${activeId}`) {
@@ -124,7 +124,7 @@ function initActiveNavOnScroll() {
             }
         });
     };
-    
+
     const observer = new IntersectionObserver(observerCallback, options);
     sections.forEach(section => observer.observe(section));
 }
@@ -135,22 +135,22 @@ function initActiveNavOnScroll() {
 function initMethodologyTabs() {
     const tabsContainer = document.getElementById('methodology-tabs-container');
     if (!tabsContainer) return;
-    
+
     const tabs = tabsContainer.querySelectorAll('.methodology-tab');
     const panels = document.querySelectorAll('.methodology-panel');
-    
+
     tabs.forEach(tab => {
         tab.addEventListener('click', () => {
             const targetStep = tab.getAttribute('data-step');
-            
+
             // 1. Set active tab
             tabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
-            
+
             // 2. Animate and display corresponding panel
             panels.forEach(panel => {
                 panel.classList.remove('active');
-                
+
                 if (panel.getAttribute('id') === `panel-${targetStep}`) {
                     panel.style.display = 'grid'; // Ensure layout displays correctly before animation triggers
                     setTimeout(() => {
@@ -175,24 +175,24 @@ function initMethodologyTabs() {
 function initMetricCounters() {
     const metricsSection = document.querySelector('.metrics');
     if (!metricsSection) return;
-    
+
     const counterElements = document.querySelectorAll('.metric-num');
     let animated = false;
-    
+
     const animateCounters = () => {
         counterElements.forEach(element => {
             const targetText = element.getAttribute('data-target');
             const targetNum = parseInt(targetText.replace(/[^0-9]/g, ''));
             const suffix = targetText.replace(/[0-9]/g, ''); // Extract + or % or K+
             const prefix = targetText.startsWith('+') ? '+' : '';
-            
+
             let current = 0;
             const duration = 2000; // ms
             const stepTime = Math.max(Math.floor(duration / targetNum), 15);
-            
+
             const timer = setInterval(() => {
                 current += Math.ceil(targetNum / 100) || 1; // Increment step
-                
+
                 if (current >= targetNum) {
                     element.textContent = targetText; // Match final exact formatted text
                     clearInterval(timer);
@@ -217,12 +217,12 @@ function initMetricCounters() {
             }, stepTime);
         });
     };
-    
+
     const options = {
         root: null,
         threshold: 0.25
     };
-    
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting && !animated) {
@@ -232,7 +232,7 @@ function initMetricCounters() {
             }
         });
     }, options);
-    
+
     observer.observe(metricsSection);
 }
 
@@ -242,10 +242,10 @@ function initMetricCounters() {
 function initFormSubmission() {
     const form = document.getElementById('diagnostic-form');
     const successMessage = document.getElementById('form-success-message');
-    
+
     // GHL WEBHOOK URL: Pega aquí la URL de tu disparador Inbound Webhook en GoHighLevel
-    const GHL_WEBHOOK_URL = 'https://services.leadconnectorhq.com/hooks/nffU33mGxkpTTCJUFMAn/webhook-trigger/a75e249b-3594-49b2-b3da-da6b75578579'; 
-    
+    const GHL_WEBHOOK_URL = 'https://services.leadconnectorhq.com/hooks/nffU33mGxkpTTCJUFMAn/webhook-trigger/a75e249b-3594-49b2-b3da-da6b75578579';
+
     if (!form || !successMessage) return;
 
     // Phone elements and validation logic
@@ -256,7 +256,7 @@ function initFormSubmission() {
         if (!phoneInput) return;
         const phone = phoneInput.value.trim().replace(/[\s-]/g, '');
         const country = countrySelect.value;
-        
+
         if (country === '+57') {
             // Colombia validation: starts with 3, exactly 10 digits
             const isCoValid = /^3\d{9}$/.test(phone);
@@ -280,10 +280,10 @@ function initFormSubmission() {
         phoneInput.addEventListener('input', validatePhone);
         countrySelect.addEventListener('change', validatePhone);
     }
-    
+
     form.addEventListener('submit', (e) => {
         e.preventDefault();
-        
+
         // Retrieve inputs for success message feedback and payload
         const nameInput = document.getElementById('form-name').value.trim();
         const emailInput = document.getElementById('form-email').value.trim();
@@ -296,7 +296,7 @@ function initFormSubmission() {
         const countryCode = countrySelect ? countrySelect.value : '';
         const phoneRaw = phoneInput ? phoneInput.value.trim().replace(/[\s-]/g, '') : '';
         const phoneFormatted = phoneRaw ? `${countryCode} ${phoneRaw}` : '';
-        
+
         // Visual sending state on submit button
         const originalBtnHTML = submitBtn.innerHTML;
         submitBtn.disabled = true;
@@ -307,7 +307,7 @@ function initFormSubmission() {
                 <path d="M4 12a8 8 0 0 1 8-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 0 1 4 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
         `;
-        
+
         // Prepare GHL payload
         const payload = {
             name: nameInput,
@@ -323,20 +323,20 @@ function initFormSubmission() {
             // 1. Inject client's details into success modal
             document.getElementById('success-user-name').textContent = nameInput;
             document.getElementById('success-user-email').textContent = emailInput;
-            
+
             // 2. Hide form cleanly
             form.style.opacity = '0';
-            
+
             setTimeout(() => {
                 form.style.display = 'none';
-                
+
                 // 3. Show premium success card
                 successMessage.style.display = 'flex';
                 setTimeout(() => {
                     successMessage.style.opacity = '1';
                     successMessage.style.transform = 'scale(1)';
                 }, 50);
-                
+
                 // Scroll to top of the CTA container to make sure success details are perfectly visible
                 const ctaSection = document.getElementById('cta');
                 window.scrollTo({
@@ -355,14 +355,14 @@ function initFormSubmission() {
                 },
                 body: JSON.stringify(payload)
             })
-            .then(response => {
-                showSuccess();
-            })
-            .catch(error => {
-                console.error('Error submitting form to GHL:', error);
-                // Fallback to still show success state to client even if webhook has CORS or network issues
-                showSuccess();
-            });
+                .then(response => {
+                    showSuccess();
+                })
+                .catch(error => {
+                    console.error('Error submitting form to GHL:', error);
+                    // Fallback to still show success state to client even if webhook has CORS or network issues
+                    showSuccess();
+                });
         } else {
             // Simulate secure API/E-mail request delay locally (1.5 seconds)
             setTimeout(() => {
