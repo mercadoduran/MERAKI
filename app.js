@@ -244,7 +244,7 @@ function initFormSubmission() {
     const successMessage = document.getElementById('form-success-message');
     
     // GHL WEBHOOK URL: Pega aquí la URL de tu disparador Inbound Webhook en GoHighLevel
-    const GHL_WEBHOOK_URL = ''; 
+    const GHL_WEBHOOK_URL = 'https://services.leadconnectorhq.com/hooks/nffU33mGxkpTTCJUFMAn/webhook-trigger/a75e249b-3594-49b2-b3da-da6b75578579'; 
     
     if (!form || !successMessage) return;
     
