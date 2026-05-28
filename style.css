@@ -1290,6 +1290,32 @@ button, input, textarea {
     height: 110px;
 }
 
+.form-group-full {
+    grid-column: 1 / -1;
+}
+
+.phone-input-container {
+    display: flex;
+    gap: 0.75rem;
+    width: 100%;
+}
+
+.phone-country-select {
+    width: 180px !important;
+    flex-shrink: 0;
+    cursor: pointer;
+    background-color: rgba(10, 15, 30, 0.8) !important;
+}
+
+.phone-country-select option {
+    background-color: #0d1220;
+    color: #ffffff;
+}
+
+.phone-number-input {
+    flex-grow: 1;
+}
+
 .form-actions {
     margin-top: 2rem;
 }

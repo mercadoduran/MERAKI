@@ -247,6 +247,39 @@ function initFormSubmission() {
     const GHL_WEBHOOK_URL = 'https://services.leadconnectorhq.com/hooks/nffU33mGxkpTTCJUFMAn/webhook-trigger/a75e249b-3594-49b2-b3da-da6b75578579'; 
     
     if (!form || !successMessage) return;
+
+    // Phone elements and validation logic
+    const phoneInput = document.getElementById('form-phone');
+    const countrySelect = document.getElementById('form-phone-country');
+
+    function validatePhone() {
+        if (!phoneInput) return;
+        const phone = phoneInput.value.trim().replace(/[\s-]/g, '');
+        const country = countrySelect.value;
+        
+        if (country === '+57') {
+            // Colombia validation: starts with 3, exactly 10 digits
+            const isCoValid = /^3\d{9}$/.test(phone);
+            if (phone.length > 0 && !isCoValid) {
+                phoneInput.setCustomValidity('El celular en Colombia debe tener 10 dígitos y comenzar con 3 (ej. 300 123 4567).');
+            } else {
+                phoneInput.setCustomValidity('');
+            }
+        } else {
+            // General validation: 7 to 12 digits
+            const isGeneralValid = /^\d{7,12}$/.test(phone);
+            if (phone.length > 0 && !isGeneralValid) {
+                phoneInput.setCustomValidity('Ingrese un número de celular válido (de 7 a 12 dígitos, solo números).');
+            } else {
+                phoneInput.setCustomValidity('');
+            }
+        }
+    }
+
+    if (phoneInput && countrySelect) {
+        phoneInput.addEventListener('input', validatePhone);
+        countrySelect.addEventListener('change', validatePhone);
+    }
     
     form.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -258,6 +291,11 @@ function initFormSubmission() {
         const roleInput = document.getElementById('form-role').value.trim();
         const challengeInput = document.getElementById('form-challenge').value.trim();
         const submitBtn = document.getElementById('btn-submit-form');
+
+        // Phone formatting
+        const countryCode = countrySelect ? countrySelect.value : '';
+        const phoneRaw = phoneInput ? phoneInput.value.trim().replace(/[\s-]/g, '') : '';
+        const phoneFormatted = phoneRaw ? `${countryCode} ${phoneRaw}` : '';
         
         // Visual sending state on submit button
         const originalBtnHTML = submitBtn.innerHTML;
@@ -274,6 +312,7 @@ function initFormSubmission() {
         const payload = {
             name: nameInput,
             email: emailInput,
+            phone: phoneFormatted,
             company: companyInput,
             role: roleInput,
             challenge: challengeInput,
