@@ -1439,6 +1439,17 @@ button, input, textarea {
     flex-shrink: 0;
 }
 
+.footer-contact-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: var(--transition-fast);
+}
+
+.footer-contact-link:hover {
+    color: var(--color-cyan-quantum);
+    text-shadow: 0 0 8px rgba(var(--color-cyan-rgb), 0.4);
+}
+
 /* Footer Bottom */
 .footer-bottom {
     border-top: 1px solid rgba(255, 255, 255, 0.03);
